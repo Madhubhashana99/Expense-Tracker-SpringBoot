@@ -26,6 +26,10 @@ public class Expense {
     @Column(nullable = false)
     private String description;
 
+    public Expense() {
+    }
+
+
     public Expense(Long id, LocalDate date, BigDecimal amount, ExpenseCategory category, String description) {
         this.id = id;
         this.date = date;
