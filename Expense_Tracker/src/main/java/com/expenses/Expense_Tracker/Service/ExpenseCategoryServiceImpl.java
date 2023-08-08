@@ -2,11 +2,16 @@ package com.expenses.Expense_Tracker.Service;
 
 import com.expenses.Expense_Tracker.Model.ExpenseCategory;
 import com.expenses.Expense_Tracker.Repository.ExpenseCategoryRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+
+@Service
+@Transactional
 public class ExpenseCategoryServiceImpl implements ExpenseCategoryService{
     private final ExpenseCategoryRepo expenseCategoryRepository;
 

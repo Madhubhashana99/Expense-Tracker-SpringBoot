@@ -23,6 +23,9 @@ public class ExpenseCategory {
         this.name = name;
     }
 
+    public ExpenseCategory() {
+    }
+
     public Long getId() {
         return id;
     }
