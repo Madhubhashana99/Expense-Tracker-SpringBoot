@@ -2,11 +2,15 @@ package com.expenses.Expense_Tracker.Controller;
 
 
 import com.expenses.Expense_Tracker.Model.Expense;
+import com.expenses.Expense_Tracker.Model.ExpenseCategory;
 import com.expenses.Expense_Tracker.Service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/expenses")
@@ -59,5 +63,20 @@ public class ExpenseController {
     public String deleteExpense(@PathVariable("id") Long id) {
         expenseService.deleteExpense(id);
         return "redirect:/expenses";
+    }
+
+    @GetMapping("/charts")
+    public String showExpenseCharts(Model model) {
+        BigDecimal totalExpenseAmount = expenseService.getTotalExpenseAmount();
+        Map<ExpenseCategory, BigDecimal> expenseSummariesByCategory = expenseService.getExpenseSummariesByCategory();
+        Map<String, BigDecimal> expenseSummariesByMonth = expenseService.getExpenseSummariesByMonth();
+        Map<Integer, BigDecimal> expenseSummariesByYear = expenseService.getExpenseSummariesByYear();
+
+        model.addAttribute("totalExpenseAmount", totalExpenseAmount);
+        model.addAttribute("expenseSummariesByCategory", expenseSummariesByCategory);
+        model.addAttribute("expenseSummariesByMonth", expenseSummariesByMonth);
+        model.addAttribute("expenseSummariesByYear", expenseSummariesByYear);
+
+        return "expense-charts";
     }
 }

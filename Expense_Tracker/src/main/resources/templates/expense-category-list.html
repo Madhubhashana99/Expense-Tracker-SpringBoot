@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Expense Category List</title>
+</head>
+<body>
+<h2>Expense Category List</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="category : ${expenseCategories}">
+        <td th:text="${category.id}"></td>
+        <td th:text="${category.name}"></td>
+        <td><a th:href="@{/expense-categories/edit/{id}(id=${category.id})}">Edit</a></td>
+        <td><a th:href="@{/expense-categories/delete/{id}(id=${category.id})}">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
+<a href="/expense-categories/add">Add New Expense Category</a>
+</body>
+</html>

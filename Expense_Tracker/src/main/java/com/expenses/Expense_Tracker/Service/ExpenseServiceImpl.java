@@ -1,12 +1,16 @@
 package com.expenses.Expense_Tracker.Service;
 
 import com.expenses.Expense_Tracker.Model.Expense;
+import com.expenses.Expense_Tracker.Model.ExpenseCategory;
 import com.expenses.Expense_Tracker.Repository.ExpenseRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -53,5 +57,78 @@ public class ExpenseServiceImpl implements ExpenseService{
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
     }
+
+
+    @Override
+    public BigDecimal getTotalExpenseAmount() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        return allExpenses.stream()
+                .map(Expense::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public Map<ExpenseCategory, BigDecimal> getExpenseSummariesByCategory() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        Map<ExpenseCategory, BigDecimal> expenseSummaries = new HashMap<>();
+
+        for (Expense expense : allExpenses) {
+            ExpenseCategory category = expense.getCategory();
+            BigDecimal amount = expense.getAmount();
+
+            if (expenseSummaries.containsKey(category)) {
+                BigDecimal currentAmount = expenseSummaries.get(category);
+                expenseSummaries.put(category, currentAmount.add(amount));
+            } else {
+                expenseSummaries.put(category, amount);
+            }
+        }
+
+        return expenseSummaries;
+    }
+
+
+    @Override
+    public Map<String, BigDecimal> getExpenseSummariesByMonth() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        Map<String, BigDecimal> expenseSummaries = new HashMap<>();
+
+        for (Expense expense : allExpenses) {
+            String month = expense.getDate().getMonth().toString();
+            BigDecimal amount = expense.getAmount();
+
+            if (expenseSummaries.containsKey(month)) {
+                BigDecimal currentAmount = expenseSummaries.get(month);
+                expenseSummaries.put(month, currentAmount.add(amount));
+            } else {
+                expenseSummaries.put(month, amount);
+            }
+        }
+
+        return expenseSummaries;
+    }
+
+
+    @Override
+    public Map<Integer, BigDecimal> getExpenseSummariesByYear() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        Map<Integer, BigDecimal> expenseSummaries = new HashMap<>();
+
+        for (Expense expense : allExpenses) {
+            int year = expense.getDate().getYear();
+            BigDecimal amount = expense.getAmount();
+
+            if (expenseSummaries.containsKey(year)) {
+                BigDecimal currentAmount = expenseSummaries.get(year);
+                expenseSummaries.put(year, currentAmount.add(amount));
+            } else {
+                expenseSummaries.put(year, amount);
+            }
+        }
+
+        return expenseSummaries;
+    }
+
+
 
 }

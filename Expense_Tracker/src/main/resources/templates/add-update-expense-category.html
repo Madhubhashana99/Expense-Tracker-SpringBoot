@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add/Update Expense Category</title>
+</head>
+<body>
+<h2 th:if="${expenseCategory.id}">Update Expense Category</h2>
+<h2 th:unless="${expenseCategory.id}">Add New Expense Category</h2>
+
+<form th:action="@{/expense-categories/add}" th:if="${not expenseCategory.id}" method="post">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+  <label>Name:</label>
+  <input type="text" th:name="name" th:value="${expenseCategory.name}" required />
+  <br />
+  <button type="submit">Save</button>
+</form>
+
+<form th:action="@{/expense-categories/edit/{id}(id=${expenseCategory.id})}" th:if="${expenseCategory.id}" method="post">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+  <label>Name:</label>
+  <input type="text" th:name="name" th:value="${expenseCategory.name}" required />
+  <br />
+  <button type="submit">Update</button>
+</form>
+
+<a href="/expense-categories">Back to Expense Category List</a>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Expense Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h2>Total Expense Amount</h2>
+<canvas id="totalExpenseChart" width="400" height="200"></canvas>
+
+<h2>Expense Summaries by Category</h2>
+<canvas id="expenseBy
+    <h2>Expense Summaries by Category</h2>
+    <canvas id="expenseByCategoryChart" width="400" height="200"></canvas>
+
+<h2>Expense Summaries by Month</h2>
+<canvas id="expenseByMonthChart" width="400" height="200"></canvas>
+
+<h2>Expense Summaries by Year</h2>
+<canvas id="expenseByYearChart" width="400" height="200"></canvas>
+
+<script th:inline="javascript">
+    /* Get data from the model */
+    var totalExpenseData = /*[[${totalExpenseAmount}]]*/ ;
+    var expenseByCategoryData = /*[[${expenseSummariesByCategory}]]*/ ;
+    var expenseByMonthData = /*[[${expenseSummariesByMonth}]]*/ ;
+    var expenseByYearData = /*[[${expenseSummariesByYear}]]*/ ;
+
+    /* Create and render the charts */
+    var totalExpenseChartCtx = document.getElementById('totalExpenseChart').getContext('2d');
+    var totalExpenseChart = new Chart(totalExpenseChartCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Total Expense Amount'],
+            datasets: [{
+                label: 'Total Expense Amount',
+                data: [totalExpenseData],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    var expenseByCategoryChartCtx = document.getElementById('expenseByCategoryChart').getContext('2d');
+    var expenseByCategoryChart = new Chart(expenseByCategoryChartCtx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(expenseByCategoryData),
+            datasets: [{
+                data: Object.values(expenseByCategoryData),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    var expenseByMonthChartCtx = document.getElementById('expenseByMonthChart').getContext('2d');
+    var expenseByMonthChart = new Chart(expenseByMonthChartCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(expenseByMonthData),
+            datasets: [{
+                label: 'Expense Summaries by Month',
+                data: Object.values(expenseByMonthData),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    var expenseByYearChartCtx = document.getElementById('expenseByYearChart').getContext('2d');
+    var expenseByYearChart = new Chart(expenseByYearChartCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(expenseByYearData),
+            datasets: [{
+                label: 'Expense Summaries by Year',
+                data: Object.values(expenseByYearData),
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
