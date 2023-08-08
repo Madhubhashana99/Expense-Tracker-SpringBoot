@@ -25,6 +25,11 @@ public class ExpenseController {
         return "expense-list";
     }
 
+    @GetMapping("/home")
+    public String showHomePage() {
+        return "home";
+    }
+
     @GetMapping("/add")
     public String showAddExpenseForm(Model model) {
         model.addAttribute("expense", new Expense());

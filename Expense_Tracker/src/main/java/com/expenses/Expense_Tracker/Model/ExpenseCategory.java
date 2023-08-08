@@ -2,6 +2,8 @@ package com.expenses.Expense_Tracker.Model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "expense_categories")
 public class ExpenseCategory {
@@ -12,6 +14,9 @@ public class ExpenseCategory {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Expense> expenses;
 
     public ExpenseCategory(Long id, String name) {
         this.id = id;
